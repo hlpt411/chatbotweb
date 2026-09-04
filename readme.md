@@ -1,166 +1,158 @@
-`````markdown
-# 🤖 PTBot — Trợ lý AI tiếng Việt
+# PTBot — Trợ lý AI tiếng Việt 🤖
 
-![Version](https://img.shields.io/badge/PTBot-v5.0%20Elite-7c5cff)
-![Single File](https://img.shields.io/badge/Single-File%20HTML-5b8def)
-![No Build](https://img.shields.io/badge/No%20Build-Required-4ade80)
+> Một giao diện chat AI hoàn chỉnh trong **một file HTML duy nhất** — không cần build, không cần framework, mở là chạy.
+> Được tạo bởi **PT** 🇻🇳
 
-> Ứng dụng chatbot AI hoàn chỉnh gói gọn trong **một file HTML duy nhất** — không cần cài đặt, không cần build, không dependency.
-> Được tạo ra và phát triển bởi **PT**.
-
-PTBot là trợ lý AI tiếng Việt với giao diện dark mode hiện đại, đặc biệt mạnh về **lập trình** và **sáng tạo nội dung**. Toàn bộ dữ liệu hội thoại được lưu **cục bộ trên trình duyệt** của bạn.
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+![No Build](https://img.shields.io/badge/Zero%20Dependencies-✓-brightgreen?style=flat-square)
 
 ---
 
-## ✨ Tính năng
+## 📖 Giới thiệu
 
-- 💬 **Giao diện chat hiện đại** — dark mode, hiệu ứng gradient, animation mượt mà
-- 🗂️ **Quản lý nhiều cuộc trò chuyện** — tạo mới, chuyển đổi, xóa từng cuộc hoặc xóa tất cả
-- 💾 **Lưu trữ cục bộ** — hội thoại lưu vào `localStorage`, tự khôi phục khi mở lại
-- 📝 **Render Markdown đầy đủ** — in đậm, in nghiêng, tiêu đề, danh sách, trích dẫn, code inline
-- 💻 **Code block cao cấp** — hiển thị ngôn ngữ, nút **Sao chép** một click
-- 🔁 **Tạo lại & Thử lại** — regenerate câu trả lời, retry khi lỗi
-- 🖥️ **Responsive** — sidebar dạng drawer với overlay khi dùng mobile
-- ⌨️ **Phím tắt** — `Enter` gửi, `Shift+Enter` xuống dòng, `/` focus ô nhập
-- 🧩 **Persona tùy biến** — system prompt định danh PTBot, lọc phản hồi giữ persona nhất quán
-- 🔔 **Toast thông báo** + hiển thị lỗi chi tiết kèm mã lỗi
+PTBot là giao diện web chat AI với giao diện tối (dark mode) hiện đại, tối ưu cho tiếng Việt. Nó kết nối tới bất kỳ API tương thích chuẩn **OpenAI Chat Completions** (OpenAI, DeepSeek, OpenRouter, Groq, các dịch vụ self-host như Ollama + LiteLLM, v.v.) và trả lời như một trợ lý AI mang danh tính riêng: **PTBot**.
 
-## 🖼️ Demo
-
-> Mở trực tiếp file `chatbot.html` trên trình duyệt để trải nghiệm.
-> *(Bạn có thể thêm screenshot tại đây)*
+Toàn bộ ứng dụng chỉ là 1 file — mở trực tiếp bằng trình duyệt hoặc host lên bất kỳ static hosting nào là dùng được.
 
 ---
 
-## 🚀 Bắt đầu nhanh
+## ✨ Tính năng chính
 
-### Yêu cầu
-
-- Trình duyệt hiện đại (Chrome, Edge, Firefox, Safari)
-- API key của một nhà cung cấp AI **tương thích chuẩn OpenAI**
-
-### Các bước
-
-1. Tải file `chatbot.html` về máy (hoặc clone repository):
-
-   ```bash
-   git clone https://github.com/[username]/[repo].git
-   ```
-
-2. **Cấu hình API** — mở file, tìm khối `API_CONFIG` ở đầu `<script>` (xem [mục bên dưới](#%EF%B8%8F-cấu-hình-api)).
-
-3. Mở bằng trình duyệt:
-
-   ```bash
-   # Nhấn đúp file, hoặc chạy local server (khuyến nghị để tránh lỗi CORS):
-   python -m http.server 8000
-   # rồi truy cập http://localhost:8000/chatbot.html
-   ```
-
-4. Chào PTBot và bắt đầu trò chuyện! 🎉
+| Nhóm | Chi tiết |
+|------|----------|
+| 💬 Chat | Gửi/nhận tin nhắn với API Chat Completions, hiệu ứng "đang nhập..." (typing indicator) |
+| 🗂️ Lịch sử | Nhiều cuộc trò chuyện, lưu tự động vào `localStorage`, đổi tên theo tin nhắn đầu, xóa từng cuộc / xóa tất cả |
+| 📝 Markdown | Render **in đậm**, *in nghiêng*, tiêu đề, danh sách, trích dẫn, `code inline` |
+| 💻 Code block | Tự tách khối code, có nút **Sao chép**, cuộn ngang khi code dài |
+| 🔄 Tiện ích | Sao chép tin nhắn, **Tạo lại** (regenerate) câu trả lời, **Thử lại** khi lỗi |
+| 🧠 Danh tính | System prompt riêng (persona) + bộ lọc `sanitizeResponse()` tự xóa nội dung lệch danh tính |
+| 📱 Responsive | Sidebar trượt trên mobile, giao diện co giãn mọi kích thước màn hình |
+| ⚠️ Xử lý lỗi | Phân loại lỗi rõ ràng: mạng, API key sai (401), rate limit (429), server lỗi (5xx), kèm toast thông báo |
+| ⌨️ Phím tắt | `Enter` gửi, `Shift + Enter` xuống dòng, `/` focus ô nhập |
 
 ---
 
-## ⚙️ Cấu hình API
+## 🛠️ Công nghệ
 
-Mở `chatbot.html`, tìm đoạn sau ở đầu thẻ `<script>`:
+- **HTML + CSS + JavaScript thuần** — không framework, không thư viện JS
+- Font: [Google Fonts](https://fonts.google.com/) (Inter + JetBrains Mono) — có sẵn fallback nếu mất mạng
+- Dữ liệu lưu trong `localStorage` của trình duyệt (key: `ptbot_conversations`)
+- Gọi API qua `fetch()` tới endpoint `/chat/completions` (chuẩn OpenAI-compatible)
 
-```javascript
+---
+
+## 🚀 Cài đặt & cấu hình
+
+### 1. Đổi tên file
+
+File hiện đang có đuôi `.txt`. Đổi thành file HTML:
+
+```
+chatbot.html.txt  →  chatbot.html
+```
+
+### 2. Cấu hình API
+
+Mở file bằng trình soạn thảo (VS Code, Notepad++...), tìm khối `API_CONFIG` ở phần đầu `<script>`:
+
+```js
 const API_CONFIG = {
-  baseUrl: 'Your base url',   // 🔗 Endpoint gốc (không có /chat/completions)
-  apiKey: 'Your api key',     // 🔑 API key của bạn
-  model: 'Your model'         // 🤖 Tên model
+  baseUrl: 'Your base url',
+  apiKey: 'Your api key',
+  model: 'Your model'
 };
 ```
 
-Ví dụ với các nhà cung cấp phổ biến (bất kỳ API tương thích chuẩn OpenAI đều dùng được):
+Thay bằng thông tin thật của bạn:
 
-| Nhà cung cấp | baseUrl | model |
-|---|---|---|
-| OpenAI | `https://api.openai.com/v1` | `gpt-4o-mini` |
-| DeepSeek | `https://api.deepseek.com/v1` | `deepseek-chat` |
-| Groq | `https://api.groq.com/openai/v1` | `llama-3.3-70b-versatile` |
-| OpenRouter | `https://openrouter.ai/api/v1` | `[tùy chọn]` |
-| Ollama (local) | `http://localhost:11434/v1` | `llama3` |
+| Trường | Mô tả | Ví dụ |
+|--------|-------|-------|
+| `baseUrl` | Base URL của API, **không kèm** `/chat/completions` | `https://api.openai.com/v1` · `https://api.deepseek.com/v1` · `https://openrouter.ai/api/v1` |
+| `apiKey` | API key của bạn | `sk-...` |
+| `model` | Tên model muốn dùng | `gpt-4o-mini` · `deepseek-chat` · `llama-3.1-70b` |
 
-> ⚠️ **Lưu ý bảo mật:** API key nằm trong file HTML phía client. **Không** commit key thật lên repository công khai và không deploy công khai với key nhúng sẵn. Với production, hãy chuyển sang server proxy.
+> 💡 **Lưu ý:** file tự nối thêm `/chat/completions` vào `baseUrl`, vì vậy mọi dịch vụ theo chuẩn OpenAI đều dùng được.
+
+### 3. Chạy
+
+**Cách 1 — Mở trực tiếp:** double-click file `chatbot.html`, trình duyệt sẽ mở.
+
+**Cách 2 — Host lên mạng:** đẩy lên GitHub Pages, Netlify, Vercel, Cloudflare Pages... để dùng trên điện thoại hoặc chia sẻ cho người khác.
 
 ---
 
 ## ⌨️ Phím tắt
 
 | Phím | Chức năng |
-|---|---|
+|------|-----------|
 | `Enter` | Gửi tin nhắn |
 | `Shift + Enter` | Xuống dòng |
-| `/` | Focus vào ô nhập liệu |
+| `/` | Nhảy vào ô nhập (khi đang không gõ chữ) |
 
 ---
 
-## 🧠 Cách hoạt động
-
-| Thành phần | Chi tiết |
-|---|---|
-| **Endpoint** | `POST {baseUrl}/chat/completions` (chuẩn OpenAI) |
-| **Tham số** | `temperature: 0.7` · `max_tokens: 3000` · không stream |
-| **Context** | Gửi 20 tin nhắn gần nhất + system prompt persona |
-| **Persona** | `PTBOT_PERSONA` + `PTBOT_REINFORCE` — định danh PTBot, giọng điệu tiếng Việt |
-| **Bộ lọc phản hồi** | `sanitizeResponse()` loại bỏ các câu làm lệch persona |
-| **Lưu trữ** | `localStorage` — key `ptbot_conversations` (dữ liệu chỉ nằm trên máy bạn) |
-| **Tiêu đề hội thoại** | Tự động lấy 40 ký tự đầu của tin nhắn đầu tiên |
-
----
-
-## 🎨 Tùy biến
-
-- **Đổi persona / giọng điệu bot:** sửa chuỗi `PTBOT_PERSONA` trong `<script>`
-- **Đổi màu chủ đạo:** sửa biến CSS trong khối `:root` (ví dụ `--accent-primary: #7c5cff`)
-- **Đổi tên & version:** sửa logo `PT`, nhãn `v5.0 Elite`, dòng status trong sidebar
-- **Đổi thẻ gợi ý:** sửa 4 `suggestion-card` trong hàm `getWelcomeHTML()`
-- **Đổi tham số AI:** sửa `temperature` / `max_tokens` trong hàm `callAPI()`
-- **Đổi số tin nhắn context:** sửa `conv.messages.slice(-20)` trong `getAIResponse()`
-
-## 📁 Cấu trúc project
+## 🧱 Cấu trúc code (trong 1 file)
 
 ```
-.
-├── chatbot.html    # Toàn bộ ứng dụng: HTML + CSS + JavaScript
-└── README.md
+chatbot.html
+├── <head> — Meta, Google Fonts, toàn bộ CSS (dark theme, responsive, animation)
+└── <body>
+    ├── Sidebar — Logo, nút chat mới, danh sách lịch sử, badge tác giả
+    ├── Chat header — Tên model, nút xóa tất cả
+    ├── Messages container — Màn hình chào + các tin nhắn
+    ├── Input area — Ô nhập đa dòng, nút gửi, gợi ý phím tắt
+    └── <script>
+        ├── API_CONFIG            — Nơi bạn điền API key (QUAN TRỌNG)
+        ├── PTBOT_PERSONA         — System prompt định danh PTBot
+        ├── sanitizeResponse()    — Bộ lọc nội dung phản hồi
+        ├── callAPI()             — Gọi API Chat Completions
+        ├── renderChat / renderHistory — Vẽ giao diện
+        ├── formatInlineMarkdown / parseMessageParts — Render Markdown + code block
+        └── Event handlers       — Submit form, phím Enter, phím tắt
 ```
 
 ---
 
-## ❓ Xử lý sự cố
+## 🔒 Lưu ý bảo mật (quan trọng!)
 
-| Vấn đề | Cách xử lý |
-|---|---|
-| **Lỗi mạng / CORS** | Chạy qua local server (`python -m http.server`) thay vì mở `file://` |
-| **"API key không hợp lệ"** | Kiểm tra lại `apiKey` trong `API_CONFIG` |
-| **"Quá nhiều yêu cầu"** | Bị rate limit (429) — đợi ít phút rồi thử lại |
-| **"Server đang gặp sự cố"** | Lỗi phía nhà cung cấp (5xx) — bấm nút *Thử lại* |
-| **Phản hồi rỗng** | Model không trả nội dung — bấm *Tạo lại* |
-| **Sao chép không hoạt động** | API Clipboard cần HTTPS/`localhost` — app có fallback tự động |
+⚠️ **API key nằm thẳng trong file HTML = bất kỳ ai xem mã nguồn (F12) đều lấy được.**
+
+- ✅ **An toàn:** dùng cho cá nhân, localhost, hoặc nhóm nhỏ tin cậy.
+- ❌ **Không an toàn:** public lên mạng cho người lạ dùng chung với key thật của bạn.
+- 💡 **Giải pháp khi muốn public:** dựng một backend proxy nhỏ (ví dụ: Cloudflare Worker, Vercel Serverless Function) giữ key ở server, frontend gọi qua proxy. Hoặc dùng các dịch vụ có key rẻ/giới hạn chi tiêu (OpenRouter, Groq...) để giảm rủi ro.
 
 ---
 
-## 📄 License
+## 🩺 Xử lý sự cố thường gặp
 
-Distributed under the MIT License. Xem file `LICENSE` để biết chi tiết.
+| Hiện tượng | Nguyên nhân | Cách khắc phục |
+|-----------|-------------|----------------|
+| `API key không hợp lệ` (401) | Key sai hoặc hết hạn | Kiểm tra lại `apiKey` |
+| `Lỗi mạng — không kết nối được server` | Sai `baseUrl`, mất mạng, hoặc CORS | Kiểm tra URL; một số dịch vụ chặn gọi từ trình duyệt (CORS) — cần dùng proxy backend |
+| `Quá nhiều yêu cầu` (429) | Vượt rate limit | Chờ một lát rồi thử lại |
+| `Server đang gặp sự cố` (5xx) | Lỗi phía nhà cung cấp | Thử lại sau |
+| Bot trả lời trống | Model không hỗ trợ hoặc prompt lỗi | Kiểm tra tên `model`, đổi model khác thử |
+| Mất hết lịch sử chat | Bị xóa `localStorage` | Dữ liệu chỉ nằm ở trình duyệt — xóa dữ liệu trình duyệt là mất chat |
+
+---
+
+## 🧩 Tùy chỉnh
+
+- **Đổi tính cách bot:** sửa biến `PTBOT_PERSONA` và `PTBOT_REINFORCE` trong `<script>`.
+- **Đổi màu giao diện:** sửa các biến CSS trong `:root` (đầu thẻ `<style>`), ví dụ `--accent-primary`, `--bg-primary`.
+- **Đổi tên bot:** tìm thay thế chữ `PTBot` (nhớ sửa cả `sanitizeResponse()` cho khớp).
+- **Chỉnh thông số sinh văn bản:** sửa `temperature`, `max_tokens` trong hàm `callAPI()`.
+
+---
 
 ## 👤 Tác giả
 
-**PT** — Nhà phát triển PTBot
-
-> PTBot v5.0 · Siêu thông minh 🟢
-`````
+**PT** — Nhà phát triển PTBot 🇻🇳
 
 ---
 
-### 📌 Hướng dẫn sử dụng nhanh:
+## 📄 Giấy phép
 
-1. Tạo file mới tên `README.md` trong thư mục chứa `chatbot.html`
-2. Copy toàn bộ nội dung ở trên vào file
-3. (Tùy chọn) Thay `[username]/[repo]` bằng link GitHub thật của bạn
-4. Save lại — GitHub sẽ tự động hiển thị README đẹp ngay trên trang repo
-
-Nếu bạn cần tôi thêm mục **Deploy** (hướng dẫn đưa lên GitHub Pages/Vercel) hoặc rút gọn README, cứ nói nhé!
+Dự án cá nhân — vui lòng giữ phần ghi công tác giả **PT** khi sử dụng hoặc phát triển tiếp.
